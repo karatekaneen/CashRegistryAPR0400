@@ -10,6 +10,8 @@ namespace CashRegistryAPR0400
     {
         static void Main(string[] args)
         {
+            Menu.InitMenu();
         }
+
     }
 }
