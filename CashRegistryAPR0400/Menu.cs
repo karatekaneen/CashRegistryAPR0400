@@ -23,8 +23,62 @@ namespace CashRegistryAPR0400
 
                 if (userInput == "0") shouldBeOpen = false;
                 else if (userInput == "1") OpenStaffMenu();
+                else if (userInput == "2") OpenProductMenu();
                 else PrintInvalidChoice();
             }
+        }
+
+        private static void OpenProductMenu()
+        {
+            bool shouldBeOpen = true;
+
+            while (shouldBeOpen)
+            {
+                Console.Clear();
+
+                PrintProductMenu();
+
+                string userInput = Console.ReadLine();
+
+                if (userInput == "0") shouldBeOpen = false;
+               else if (userInput == "1")
+                {
+                    Product.ListAll();
+                    ReturnToMenu();
+                }
+                else if (userInput == "2")
+                {
+                    Product.Create();
+                    ReturnToMenu();
+                }
+                /*else if (userInput == "3")
+                {
+                    Staff.Delete();
+                    ReturnToMenu();
+                }
+                else if (userInput == "4")
+                {
+                    Staff.Edit();
+                    ReturnToMenu();
+                } 
+                */
+                else PrintInvalidChoice();
+            }
+        }
+
+        private static void PrintProductMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("\t *** Products *** \n");
+            Product.ListAll(); // List all the staff every time
+
+            string staffMenu = "\nEnter your choice:\n" +
+                "\t0 - Exit \n" +
+                "\t1 - List all\n" +
+                "\t2 - Add\n" +
+                "\t3 - Delete\n" +
+                "\t4 - Edit";
+            Console.WriteLine(staffMenu);
         }
 
         private static void PrintInvalidChoice()
@@ -69,7 +123,7 @@ namespace CashRegistryAPR0400
         private static void PrintStaffMenu()
         {
             Console.Clear();
-
+            Console.WriteLine("\t *** Staff *** \n");
             Staff.ListAll(); // List all the staff every time
 
             string staffMenu = "\nEnter your choice:\n" +
