@@ -35,7 +35,7 @@ namespace CashRegistryAPR0400
 
         public override string ToString()
         {
-            return String.Format("{0} {1} - {2} - # Transactions: {3}", FirstName, LastName, SocialSecurityNumber, Transaction.Count);
+            return String.Format("Id: {0} - {1} {2} - {3} - # Transactions: {4}", Id, FirstName, LastName, SocialSecurityNumber, Transaction.Count);
         }
 
         internal static void ListAll()
@@ -47,11 +47,136 @@ namespace CashRegistryAPR0400
             }
         }
 
+        private static bool RemoveStaffMember(int userId)
+        {
+            using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+            {
+                Staff staffToRemove = db.Staff.Find(userId);
+
+                if (staffToRemove != null)
+                {
+                    db.Staff.Remove(staffToRemove);
+                    db.SaveChanges();
+                    return true;
+                }
+                else return false;
+            }
+        }
+
+        internal static void Edit()
+        {
+            bool editComplete = false;
+
+            Console.Clear();
+            Console.WriteLine("** Edit Staff member");
+            ListAll();
+            Console.WriteLine("\nEnter ID of the staff member you want to edit. 0 (zero) for exit");
+
+            while (!editComplete)
+            {
+                Console.Write("Id: ");
+                string userInput = Console.ReadLine();
+                if (userInput == "0") break;
+                try
+                {
+                    int userId = int.Parse(userInput);
+                    using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+                    {
+                        Staff staffToEdit = db.Staff.Find(userId);
+
+                        if (staffToEdit != null)
+                        {
+                            bool socialSecurityNumberValid = false;
+                            bool isModified = false;
+                            string socSec = "";
+
+                            Console.WriteLine("If you want to change the value enter the new. If you don't want to change the value leave the row empty.\n");
+                            Console.Write("First name: ");
+                            string firstName = Console.ReadLine();
+
+                            Console.Write("Last name: ");
+                            string lastName = Console.ReadLine();
+
+                            while (!socialSecurityNumberValid)
+                            {
+                                Console.Write("Social Security Number: ");
+                                string tempSocSec = Console.ReadLine();
+
+                                if (ValidateSocialSecurityNumber(tempSocSec))
+                                {
+                                    socSec = tempSocSec;
+                                    socialSecurityNumberValid = true;
+                                }
+                            }
+
+                            if (firstName != "") {
+                                isModified = true;
+                                staffToEdit.FirstName = firstName;
+                            }
+                            if (lastName != "")
+                            {
+                                isModified = true;
+                                staffToEdit.LastName = lastName;
+                            }
+                            if (socSec != "")
+                            {
+                                isModified = true;
+                                staffToEdit.SocialSecurityNumber = socSec;
+                            }
+
+                            editComplete = true;
+                            if (isModified) db.SaveChanges();
+                            Console.WriteLine("Edit complete:");
+                            Console.WriteLine(staffToEdit.ToString());
+
+                        }
+                        else Console.WriteLine(String.Format("No staff member with id {0} was found.", userId));
+
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid formatted ID.");
+                }
+            }
+
+
+        }
+
+        internal static void Delete()
+        {
+            bool removalSuccessful = false;
+            Console.Clear();
+            Console.WriteLine("** Remove Staff member");
+            ListAll();
+            Console.WriteLine("\nEnter ID of the staff member you want to remove. 0 (zero) for exit");
+
+            while (!removalSuccessful)
+            {
+                Console.Write("Id: ");
+                string userInput = Console.ReadLine();
+                if (userInput == "0") break;
+                try
+                {
+                    int userId = int.Parse(userInput);
+                    removalSuccessful = RemoveStaffMember(userId);
+
+                    if (removalSuccessful) Console.WriteLine("Staff member deleted");
+                    else Console.WriteLine(String.Format("No staff member with id {0} was found.", userId));
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid formatted ID.");
+                }
+            }
+
+        }
+
         internal static void Create()
         {
             bool socialSecurityNumberValid = false;
             string socSec = null;
-            Console.WriteLine("Create Staff member");
+            Console.WriteLine("** Create Staff member");
 
             Console.Write("First name: ");
             string firstName = Console.ReadLine();
@@ -83,9 +208,9 @@ namespace CashRegistryAPR0400
                 db.SaveChanges();
             }
 
-
-            //throw new NotImplementedException();
         }
+
+        
 
         private static bool ValidateSocialSecurityNumber(string tempSocSec)
         {
@@ -93,14 +218,6 @@ namespace CashRegistryAPR0400
             return true;
         }
 
-        static public List<Staff> GetStaff()
-        {
-            using (GroceryStoreDataModel db = new GroceryStoreDataModel())
-            {
-                var staff = db.Staff.ToList();
-                staff.ForEach(x => Console.WriteLine(x.ToString()));
-                return staff;
-            }
-        }
+
     }
 }

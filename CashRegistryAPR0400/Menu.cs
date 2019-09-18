@@ -53,6 +53,14 @@ namespace CashRegistryAPR0400
                 {
                     Staff.Create();
                     ReturnToMenu();
+                } else if (userInput == "3")
+                {
+                    Staff.Delete();
+                    ReturnToMenu();
+                } else if (userInput == "4")
+                {
+                    Staff.Edit();
+                    ReturnToMenu();
                 }
                 else PrintInvalidChoice();
             }
@@ -61,7 +69,10 @@ namespace CashRegistryAPR0400
         private static void PrintStaffMenu()
         {
             Console.Clear();
-            string staffMenu = "Enter your choice:\n" +
+
+            Staff.ListAll(); // List all the staff every time
+
+            string staffMenu = "\nEnter your choice:\n" +
                 "\t0 - Exit \n" +
                 "\t1 - List all\n" +
                 "\t2 - Add\n" +
