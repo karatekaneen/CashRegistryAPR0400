@@ -1,42 +1,19 @@
-namespace CashRegistryAPR0400
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CashRegistryAPR0400.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-    using System.Linq;
-
-    [Table("Product")]
-    public partial class Product
+    class ProductHandler
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
-        {
-            TransactionComponent = new HashSet<TransactionComponent>();
-        }
-
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
-
-        public double Price { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Category { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TransactionComponent> TransactionComponent { get; set; }
-
         internal static void ListAll()
         {
-            using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+            using (CashRegistryModel db = new CashRegistryModel())
             {
                 var products = db.Product.ToList();
-                products.ForEach(x => Console.WriteLine(x.ToString()));
+                products.ForEach(x => Console.WriteLine(PrintInfo(x)));
             }
         }
 
@@ -59,18 +36,15 @@ namespace CashRegistryAPR0400
 
                 price = GetPrice(false, null);
 
-                using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+                using (CashRegistryModel db = new CashRegistryModel())
                 {
-                    Product product = new Product();
-                    product.Name = name;
-                    product.Category = category;
-                    product.Price = price;
+                    Product product = new Product { Name = name, Category = category, Price = price };
 
                     db.Product.Add(product);
                     db.SaveChanges();
 
                     Console.WriteLine("Created product:");
-                    Console.WriteLine(product.ToString());
+                    Console.WriteLine(PrintInfo(product));
                     successful = true;
                 }
             }
@@ -93,7 +67,7 @@ namespace CashRegistryAPR0400
                 try
                 {
                     int productId = int.Parse(userInput);
-                    using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+                    using (CashRegistryModel db = new CashRegistryModel())
                     {
                         Product productToEdit = db.Product.Find(productId);
 
@@ -129,7 +103,7 @@ namespace CashRegistryAPR0400
                             editComplete = true;
                             if (isModified) db.SaveChanges();
                             Console.WriteLine("Edit complete:");
-                            Console.WriteLine(productToEdit.ToString());
+                            Console.WriteLine(PrintInfo(productToEdit));
 
                         }
                         else Console.WriteLine(String.Format("No product with id {0} was found.", productId));
@@ -173,7 +147,7 @@ namespace CashRegistryAPR0400
 
         private static bool RemoveProduct(int productId)
         {
-            using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+            using (CashRegistryModel db = new CashRegistryModel())
             {
                 Product productToRemove = db.Product.Find(productId);
 
@@ -214,9 +188,10 @@ namespace CashRegistryAPR0400
             return price;
         }
 
-        public override string ToString()
-        { 
-            return String.Format("Id: {0} \tName: {1} \tPrice: {2} \tCategory: {3}", Id, Name, Price, Category);
+        public static string PrintInfo(Product product)
+        {
+            return String.Format("Id: {0} \tName: {1} \tPrice: {2} \tCategory: {3}", product.Id, product.Name, product.Price, product.Category);
         }
     }
 }
+

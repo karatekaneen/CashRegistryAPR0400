@@ -66,14 +66,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GroceryStoreDataModel.cs" />
-    <Compile Include="Menu.cs" />
-    <Compile Include="Product.cs" />
+    <Compile Include="Models\DB\CashRegistryModel.cs" />
+    <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\Handlers\ProductHandler.cs" />
+    <Compile Include="Models\Handlers\StaffHandler.cs" />
+    <Compile Include="Models\DB\Product.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Staff.cs" />
-    <Compile Include="Transaction.cs" />
-    <Compile Include="TransactionComponent.cs" />
+    <Compile Include="Models\DB\Staff.cs" />
+    <Compile Include="Models\DB\Transaction.cs" />
+    <Compile Include="Models\DB\TransactionComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

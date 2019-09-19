@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CashRegistryAPR0400.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,13 +23,13 @@ namespace CashRegistryAPR0400
                 string userInput = Console.ReadLine();
 
                 if (userInput == "0") shouldBeOpen = false;
-                else if (userInput == "1") OpenStaffMenu();
-                else if (userInput == "2") OpenProductMenu();
+                else if (userInput == "1") OpenStaffHandlerMenu();
+                else if (userInput == "2") OpenProductHandlerMenu();
                 else PrintInvalidChoice();
             }
         }
 
-        private static void OpenProductMenu()
+        private static void OpenProductHandlerMenu()
         {
             bool shouldBeOpen = true;
 
@@ -36,40 +37,40 @@ namespace CashRegistryAPR0400
             {
                 Console.Clear();
 
-                PrintProductMenu();
+                PrintProductHandlerMenu();
 
                 string userInput = Console.ReadLine();
 
                 if (userInput == "0") shouldBeOpen = false;
                else if (userInput == "1")
                 {
-                    Product.ListAll();
+                    ProductHandler.ListAll();
                     ReturnToMenu();
                 }
                 else if (userInput == "2")
                 {
-                    Product.Create();
+                    ProductHandler.Create();
                     ReturnToMenu();
                 }
                 else if (userInput == "3")
                 {
-                    Product.Delete();
+                    ProductHandler.Delete();
                     ReturnToMenu();
                 }
                 else if (userInput == "4")
                 {
-                    Product.Edit();
+                    ProductHandler.Edit();
                     ReturnToMenu();
                 } 
                 else PrintInvalidChoice();
             }
         }
 
-        private static void PrintProductMenu()
+        private static void PrintProductHandlerMenu()
         {
             Console.Clear();
             Console.WriteLine("\t *** Products *** \n");
-            Product.ListAll(); // List all the staff every time
+            ProductHandler.ListAll(); // List all the staff every time
 
             string staffMenu = "\nEnter your choice:\n" +
                 "\t0 - Exit \n" +
@@ -86,7 +87,7 @@ namespace CashRegistryAPR0400
             Console.ReadKey();
         }
 
-        private static void OpenStaffMenu()
+        private static void OpenStaffHandlerMenu()
         {
             bool shouldBeOpen = true;
 
@@ -94,36 +95,36 @@ namespace CashRegistryAPR0400
             {
                 Console.Clear();
 
-                PrintStaffMenu();
+                PrintStaffHandlerMenu();
 
                 string userInput = Console.ReadLine();
 
                 if (userInput == "0") shouldBeOpen = false;
                 else if (userInput == "1") {
-                    Staff.ListAll();
+                    StaffHandler.ListAll();
                     ReturnToMenu();
                 } else if (userInput == "2")
                 {
-                    Staff.Create();
+                    StaffHandler.Create();
                     ReturnToMenu();
                 } else if (userInput == "3")
                 {
-                    Staff.Delete();
+                    StaffHandler.Delete();
                     ReturnToMenu();
                 } else if (userInput == "4")
                 {
-                    Staff.Edit();
+                    StaffHandler.Edit();
                     ReturnToMenu();
                 }
                 else PrintInvalidChoice();
             }
         }
 
-        private static void PrintStaffMenu()
+        private static void PrintStaffHandlerMenu()
         {
             Console.Clear();
             Console.WriteLine("\t *** Staff *** \n");
-            Staff.ListAll(); // List all the staff every time
+            StaffHandler.ListAll(); // List all the staff every time
 
             string staffMenu = "\nEnter your choice:\n" +
                 "\t0 - Exit \n" +

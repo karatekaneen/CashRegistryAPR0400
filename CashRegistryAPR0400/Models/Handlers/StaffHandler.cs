@@ -1,55 +1,30 @@
-namespace CashRegistryAPR0400
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CashRegistryAPR0400.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-    using System.Linq;
-
-    [Table("Staff")]
-    public partial class Staff
+    class StaffHandler
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Staff()
+        public static string PrintInfo(Staff staff)
         {
-            Transaction = new HashSet<Transaction>();
-        }
-
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string FirstName { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string LastName { get; set; }
-
-        [Required]
-        [StringLength(12)]
-        public string SocialSecurityNumber { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Transaction> Transaction { get; set; }
-
-        public override string ToString()
-        {
-            return String.Format("Id: {0} - {1} {2} - {3} - # Transactions: {4}", Id, FirstName, LastName, SocialSecurityNumber, Transaction.Count);
+            return String.Format("Id: {0} - {1} {2} - {3} - # Transactions: {4}", staff.Id, staff.FirstName, staff.LastName, staff.SocialSecurityNumber, staff.Transaction.Count);
         }
 
         internal static void ListAll()
         {
-            using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+            using (CashRegistryModel db = new CashRegistryModel())
             {
                 var staff = db.Staff.ToList();
-                staff.ForEach(x => Console.WriteLine(x.ToString()));
+                staff.ForEach(x => Console.WriteLine(PrintInfo(x)));
             }
         }
 
         private static bool RemoveStaffMember(int userId)
         {
-            using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+            using (CashRegistryModel db = new CashRegistryModel())
             {
                 Staff staffToRemove = db.Staff.Find(userId);
 
@@ -80,7 +55,7 @@ namespace CashRegistryAPR0400
                 try
                 {
                     int userId = int.Parse(userInput);
-                    using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+                    using (CashRegistryModel db = new CashRegistryModel())
                     {
                         Staff staffToEdit = db.Staff.Find(userId);
 
@@ -109,7 +84,8 @@ namespace CashRegistryAPR0400
                                 }
                             }
 
-                            if (firstName != "") {
+                            if (firstName != "")
+                            {
                                 isModified = true;
                                 staffToEdit.FirstName = firstName;
                             }
@@ -127,7 +103,7 @@ namespace CashRegistryAPR0400
                             editComplete = true;
                             if (isModified) db.SaveChanges();
                             Console.WriteLine("Edit complete:");
-                            Console.WriteLine(staffToEdit.ToString());
+                            Console.WriteLine(PrintInfo(staffToEdit));
 
                         }
                         else Console.WriteLine(String.Format("No staff member with id {0} was found.", userId));
@@ -196,7 +172,7 @@ namespace CashRegistryAPR0400
                 }
             }
 
-            using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+            using (CashRegistryModel db = new CashRegistryModel())
             {
                 Staff staff = new Staff();
 
@@ -210,14 +186,12 @@ namespace CashRegistryAPR0400
 
         }
 
-        
+
 
         private static bool ValidateSocialSecurityNumber(string tempSocSec)
         {
             // TODO - Here we *Should* add validation that it aligns with our requirements but I'm making the judgement that it's outside the scope of the assignment.
             return true;
         }
-
-
     }
 }

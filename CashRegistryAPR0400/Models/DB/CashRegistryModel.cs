@@ -5,10 +5,10 @@ namespace CashRegistryAPR0400
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class GroceryStoreDataModel : DbContext
+    public partial class CashRegistryModel : DbContext
     {
-        public GroceryStoreDataModel()
-            : base("name=GroceryStoreDataModel")
+        public CashRegistryModel()
+            : base("name=CashRegistryModel")
         {
         }
 
@@ -26,12 +26,6 @@ namespace CashRegistryAPR0400
             modelBuilder.Entity<Product>()
                 .Property(e => e.Category)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<Product>()
-                .HasMany(e => e.TransactionComponent)
-                .WithRequired(e => e.Product1)
-                .HasForeignKey(e => e.Product)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Staff>()
                 .Property(e => e.FirstName)
@@ -57,9 +51,16 @@ namespace CashRegistryAPR0400
 
             modelBuilder.Entity<Transaction>()
                 .HasMany(e => e.TransactionComponent)
-                .WithRequired(e => e.Transaction1)
-                .HasForeignKey(e => e.Transaction)
+                .WithRequired(e => e.Transaction)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TransactionComponent>()
+                .Property(e => e.ProductName)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransactionComponent>()
+                .Property(e => e.ProductCategory)
+                .IsUnicode(false);
         }
     }
 }

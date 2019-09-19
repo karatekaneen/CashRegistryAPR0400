@@ -11,14 +11,20 @@ namespace CashRegistryAPR0400
     {
         public int Id { get; set; }
 
-        public int Product { get; set; }
-
         public double Quantity { get; set; }
 
-        public int Transaction { get; set; }
+        public int TransactionId { get; set; }
 
-        public virtual Product Product1 { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string ProductName { get; set; }
 
-        public virtual Transaction Transaction1 { get; set; }
+        public double ProductPrice { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string ProductCategory { get; set; }
+
+        public virtual Transaction Transaction { get; set; }
     }
 }
