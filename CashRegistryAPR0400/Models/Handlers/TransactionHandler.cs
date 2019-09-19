@@ -8,6 +8,8 @@ namespace CashRegistryAPR0400.Models.Handlers
 {
     class TransactionHandler
     {
+        #region Sell
+
         public static void Sell()
         {
             bool shouldBeOpen = true;
@@ -90,21 +92,6 @@ namespace CashRegistryAPR0400.Models.Handlers
             }
         }
 
-        private static void PrintSummary(Transaction transaction)
-        {
-            Console.WriteLine(String.Format("** Summary **\n" +
-                "\tStaff: {0} {1}\n" +
-                "\tTime of purchase: {2}\n" +
-                "\tProducts: ", 
-                transaction.Staff.FirstName,
-                transaction.Staff.LastName,
-                transaction.TimeOfPurchase.ToShortDateString()));
-            foreach (TransactionComponent tc in transaction.TransactionComponent)
-            {
-                Console.WriteLine("\t\t" + TransactionComponentHandler.Summarize(tc));
-            }
-        }
-
         private static void FinalizeTransaction(Transaction transaction)
         {
 
@@ -140,7 +127,8 @@ namespace CashRegistryAPR0400.Models.Handlers
             }
             else // If we have to start from scratch:
             {
-                Transaction transactionToHandle = new Transaction {
+                Transaction transactionToHandle = new Transaction
+                {
                     Staff = staff,
                     TimeOfPurchase = DateTime.Now,
                 };
@@ -198,6 +186,28 @@ namespace CashRegistryAPR0400.Models.Handlers
 
         }
 
+        #endregion
+
+
+        #region Helper methods
+
+        private static void PrintSummary(Transaction transaction)
+        {
+            Console.WriteLine(String.Format("** Summary **\n" +
+                "\tStaff: {0} {1}\n" +
+                "\tTime of purchase: {2}\n" +
+                "\tProducts: ", 
+                transaction.Staff.FirstName,
+                transaction.Staff.LastName,
+                transaction.TimeOfPurchase.ToShortDateString()));
+            foreach (TransactionComponent tc in transaction.TransactionComponent)
+            {
+                Console.WriteLine("\t\t" + TransactionComponentHandler.Summarize(tc));
+            }
+        }
+
+
+
         private static Staff Login(List<Staff> availableStaff)
         {
             bool loggedIn = false;
@@ -235,5 +245,7 @@ namespace CashRegistryAPR0400.Models.Handlers
             return staffToLogin;
 
         }
+        #endregion
+
     }
 }
