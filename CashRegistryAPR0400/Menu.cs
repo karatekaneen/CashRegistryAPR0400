@@ -51,12 +51,12 @@ namespace CashRegistryAPR0400
                     Product.Create();
                     ReturnToMenu();
                 }
-                /*else if (userInput == "3")
+                else if (userInput == "3")
                 {
-                    Staff.Delete();
+                    Product.Delete();
                     ReturnToMenu();
                 }
-                else if (userInput == "4")
+                /*else if (userInput == "4")
                 {
                     Staff.Edit();
                     ReturnToMenu();

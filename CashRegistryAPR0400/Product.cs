@@ -75,10 +75,55 @@ namespace CashRegistryAPR0400
                 }
             }
         }
+
+        internal static void Delete()
+        {
+            bool removalSuccessful = false;
+            Console.Clear();
+            Console.WriteLine("** Remove Product");
+            ListAll();
+            Console.WriteLine("\nEnter ID of the product you want to remove. 0 (zero) for exit");
+
+            while (!removalSuccessful)
+            {
+                Console.Write("Id: ");
+                string userInput = Console.ReadLine();
+                if (userInput == "0") break;
+                try
+                {
+                    int userId = int.Parse(userInput);
+                    removalSuccessful = RemoveProduct(userId);
+
+                    if (removalSuccessful) Console.WriteLine("Product deleted");
+                    else Console.WriteLine(String.Format("No product with id {0} was found.", userId));
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid formatted ID.");
+                }
+            }
+        }
+
+        private static bool RemoveProduct(int productId)
+        {
+            using (GroceryStoreDataModel db = new GroceryStoreDataModel())
+            {
+                Product productToRemove = db.Product.Find(productId);
+
+                if (productToRemove != null)
+                {
+                    db.Product.Remove(productToRemove);
+                    db.SaveChanges();
+                    return true;
+                }
+                else return false;
+            }
+        }
+
         private static double GetPrice()
         {
             double price = 0.00;
-            while (price <= 0.00) // Can not be free
+            while (price <= 0.00) // Can not be free or negative.
             {
                 Console.Write("Price (use , and not . for decimals): ");
                 string inputPrice = Console.ReadLine();
