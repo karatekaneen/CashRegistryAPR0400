@@ -9,7 +9,8 @@ namespace CashRegistryAPR0400
 {
     class Menu
     {
-        
+
+        #region General
 
         static public void InitMenu()
         {
@@ -28,6 +29,36 @@ namespace CashRegistryAPR0400
                 else PrintInvalidChoice();
             }
         }
+
+        private static void PrintMainMenu()
+        {
+            Console.Clear();
+
+            string mainMenu = "Enter your choice:\n" +
+                "\t0 - Exit \n" +
+                "\t1 - Staff\n" +
+                "\t2 - Products\n" +
+                "\t3 - Transactions";
+            Console.WriteLine(mainMenu);
+
+        }
+
+        private static void ReturnToMenu()
+        {
+            Console.WriteLine("\n\n** Press any key to return to menu");
+            Console.ReadKey();
+        }
+
+        private static void PrintInvalidChoice()
+        {
+            Console.WriteLine("Invalid Choice - Press any key to try again");
+            Console.ReadKey();
+        }
+
+
+        #endregion
+
+        #region Products
 
         private static void OpenProductHandlerMenu()
         {
@@ -81,11 +112,10 @@ namespace CashRegistryAPR0400
             Console.WriteLine(staffMenu);
         }
 
-        private static void PrintInvalidChoice()
-        {
-            Console.WriteLine("Invalid Choice - Press any key to try again");
-            Console.ReadKey();
-        }
+        #endregion
+
+        #region Staff
+
 
         private static void OpenStaffHandlerMenu()
         {
@@ -135,24 +165,6 @@ namespace CashRegistryAPR0400
             Console.WriteLine(staffMenu);
         }
 
-
-        private static void PrintMainMenu()
-        {
-            Console.Clear();
-
-            string mainMenu = "Enter your choice:\n" +
-                "\t0 - Exit \n" +
-                "\t1 - Staff\n" +
-                "\t2 - Products\n" +
-                "\t3 - Transactions";
-            Console.WriteLine(mainMenu);
-
-        }
-
-        private static void ReturnToMenu()
-        {
-            Console.WriteLine("\n\n** Press any key to return to menu");
-            Console.ReadKey();
-        }
+        #endregion
     }
 }
