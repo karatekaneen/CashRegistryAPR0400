@@ -10,7 +10,7 @@ namespace CashRegistryAPR0400.Models
     {
         public static string PrintInfo(Staff staff)
         {
-            return String.Format("Id: {0} - {1} {2} - {3} - # Transactions: {4}", staff.Id, staff.FirstName, staff.LastName, staff.SocialSecurityNumber, staff.Transaction.Count);
+            return String.Format("Id: {0} - {1} {2} - {3}", staff.Id, staff.FirstName, staff.LastName, staff.SocialSecurityNumber);
         }
 
         internal static void ListAll()
@@ -19,6 +19,14 @@ namespace CashRegistryAPR0400.Models
             {
                 var staff = db.Staff.ToList();
                 staff.ForEach(x => Console.WriteLine(PrintInfo(x)));
+            }
+        }
+
+        internal static List<Staff> GetAllStaff()
+        {
+            using (CashRegistryModel db = new CashRegistryModel())
+            {
+                return db.Staff.ToList();
             }
         }
 

@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\DB\CashRegistryModel.cs" />
+    <Compile Include="Models\Handlers\TransactionHandler.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Handlers\ProductHandler.cs" />
     <Compile Include="Models\Handlers\StaffHandler.cs" />

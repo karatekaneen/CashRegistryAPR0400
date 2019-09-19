@@ -17,6 +17,14 @@ namespace CashRegistryAPR0400.Models
             }
         }
 
+        internal static List<Product> GetAllProducts()
+        {
+            using (CashRegistryModel db = new CashRegistryModel())
+            {
+                return db.Product.ToList();
+            }
+        }
+
         internal static void Create()
         {
             bool successful = false;

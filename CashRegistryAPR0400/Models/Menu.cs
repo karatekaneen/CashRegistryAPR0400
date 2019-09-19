@@ -1,7 +1,7 @@
 ﻿using CashRegistryAPR0400.Models;
+using CashRegistryAPR0400.Models.Handlers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +26,7 @@ namespace CashRegistryAPR0400
                 if (userInput == "0") shouldBeOpen = false;
                 else if (userInput == "1") OpenStaffHandlerMenu();
                 else if (userInput == "2") OpenProductHandlerMenu();
+                else if (userInput == "3") OpenTransactionHandlerMenu();
                 else PrintInvalidChoice();
             }
         }
@@ -166,5 +167,65 @@ namespace CashRegistryAPR0400
         }
 
         #endregion
+
+        #region Transactions
+
+        private static void PrintTransactionHandlerMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("\t *** Transactions *** \n");
+
+            string transactionMenu = "\nEnter your choice:\n" +
+                "\t0 - Exit \n" +
+                "\t1 - Summary\n" +
+                "\t2 - List\n" +
+                "\t3 - Sell\n" +
+                "\t4 - Delete transaction"; // Not allowing edit due to security reasons. Will be implemented in v2.0
+            Console.WriteLine(transactionMenu);
+        }
+
+        private static void OpenTransactionHandlerMenu()
+        {
+            bool shouldBeOpen = true;
+
+            while (shouldBeOpen)
+            {
+                Console.Clear();
+
+                PrintTransactionHandlerMenu();
+
+                string userInput = Console.ReadLine();
+
+                if (userInput == "0") shouldBeOpen = false;
+                /*else if (userInput == "1")
+                {
+                    ProductHandler.ListAll();
+                    ReturnToMenu();
+                }
+                else if (userInput == "2")
+                {
+                    ProductHandler.Create();
+                    ReturnToMenu();
+                }
+                */
+                else if (userInput == "3")
+                {
+                    TransactionHandler.Sell();
+                    ReturnToMenu();
+                }
+                /*
+                else if (userInput == "4")
+                {
+                    ProductHandler.Edit();
+                    ReturnToMenu();
+                }
+                */
+                else PrintInvalidChoice();
+            }
+        }
+
+        #endregion
+
+
     }
 }
