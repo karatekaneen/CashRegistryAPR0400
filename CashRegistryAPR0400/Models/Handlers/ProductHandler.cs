@@ -200,6 +200,11 @@ namespace CashRegistryAPR0400.Models
         {
             return String.Format("Id: {0} \tName: {1} \tPrice: {2} \tCategory: {3}", product.Id, product.Name, product.Price, product.Category);
         }
+
+        public static void PrintInfoList(List<Product> products)
+        {
+            products.ForEach(product => Console.WriteLine(PrintInfo(product)));
+        }
     }
 }
 

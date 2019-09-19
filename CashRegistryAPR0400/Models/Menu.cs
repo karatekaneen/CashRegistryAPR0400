@@ -50,7 +50,7 @@ namespace CashRegistryAPR0400
             Console.ReadKey();
         }
 
-        private static void PrintInvalidChoice()
+        public static void PrintInvalidChoice()
         {
             Console.WriteLine("Invalid Choice - Press any key to try again");
             Console.ReadKey();
