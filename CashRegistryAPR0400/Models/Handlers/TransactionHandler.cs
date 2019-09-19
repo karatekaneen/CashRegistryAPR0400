@@ -110,7 +110,7 @@ namespace CashRegistryAPR0400.Models.Handlers
 
             using (CashRegistryModel db = new CashRegistryModel())
             {
-                transaction.Staff = db.Staff.Find(transaction.Staff.Id);
+                transaction.Staff = db.Staff.Find(transaction.Staff.Id); // fetching the staff "again" to avoid conflicts
                 db.Transaction.Add(transaction);
                 db.SaveChanges();
             }

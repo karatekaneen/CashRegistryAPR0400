@@ -28,7 +28,7 @@ namespace CashRegistryAPR0400.Models.Handlers
 
         internal static string Summarize(TransactionComponent tc)
         {
-            return String.Format("{0} - {0} * {1} - {2}", tc.ProductName, tc.ProductPrice, tc.Quantity, tc.ProductPrice*tc.Quantity);
+            return String.Format("{0} - {1} * {2} - {3}", tc.ProductName, tc.ProductPrice, tc.Quantity, tc.ProductPrice*tc.Quantity);
         }
     }
 }

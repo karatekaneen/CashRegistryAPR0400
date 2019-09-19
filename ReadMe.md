@@ -47,20 +47,23 @@ CREATE TABLE [dbo].[Transaction]
 )
 ```
 
-Here we are using the StaffMember as a foregin key to be able to see what person in the staff was handling the purchase.
+Here we are using the `StaffMember` as a foregin key to be able to see what person in the staff was handling the purchase.
 
 ### TransactionComponent table
 
 ```sql
-CREATE TABLE [dbo].[TransactionComponent]
-(
-	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
-	[Product] INT NOT NULL,
-	[Quantity] FLOAT NOT NULL,
-	[Transaction] INT NOT NULL,
-	CONSTRAINT [FK_TransactionComponent_Product] FOREIGN KEY ([Product]) REFERENCES [Product]([Id]),
-	CONSTRAINT [FK_TransactionComponent_Transaction] FOREIGN KEY ([Transaction]) REFERENCES [Transaction]([Id])
-)
+CREATE TABLE [dbo].[TransactionComponent] (
+    [Id]              INT          IDENTITY (1, 1) NOT NULL,
+    [Quantity]        FLOAT (53)   NOT NULL,
+    [TransactionId]   INT          NOT NULL,
+    [ProductName]     VARCHAR (50) NOT NULL,
+    [ProductPrice]    FLOAT (53)   NOT NULL,
+    [ProductCategory] VARCHAR (50) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_TransactionComponent_Transaction] FOREIGN KEY ([TransactionId]) REFERENCES [dbo].[Transaction] ([Id])
+);
 ```
 
-In this table we are using two foreign keys. One for adding the product (and to be able to multiply the price with the quantity) and one to link to the transaction to later on be able to get all the products linked to one Transaction.
+This table is almost a duplicate of the `Product` table. This is because we don't want to link to the actual product here because if the linked
+product for instance get an updated price all the historical transactions with the product within them will get updated and will kill all serious
+attempts of recordkeeping.
