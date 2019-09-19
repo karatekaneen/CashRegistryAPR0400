@@ -76,7 +76,7 @@ namespace CashRegistryAPR0400
             {
                 Console.Write("Id: ");
                 string userInput = Console.ReadLine();
-                if (userInput == "0") break;
+                if (userInput == "0") break; // Exit early if 0 is entered.
                 try
                 {
                     int userId = int.Parse(userInput);
