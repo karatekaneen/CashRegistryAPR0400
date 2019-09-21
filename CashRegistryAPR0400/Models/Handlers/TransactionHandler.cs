@@ -186,6 +186,79 @@ namespace CashRegistryAPR0400.Models.Handlers
 
         }
 
+        internal static void OpenListMenu()
+        {
+            bool shouldBeOpen = true;
+
+            Console.Clear();
+            Console.WriteLine("** List transactions by **");
+            Console.WriteLine("0 - Exit\n" +
+                "1 - Group by staff member\n" +
+                "2 - Order by sum \n" +
+                "3 - All transactions >= $100\n" +
+                "4 - Health freaks (No dairy or colonial)\n" +
+                "5 - Slobs (No fruits)\n");
+            while (shouldBeOpen)
+            {
+                Console.Write("Enter your choice: ");
+                string userInput = Console.ReadLine();
+
+                if (userInput == "0") break;
+                else if (userInput == "1") PrintByStaffMember();
+                //else if (userInput == "2")
+                else Menu.PrintInvalidChoice();
+            }
+        }
+
+        private static void PrintByStaffMember()
+        {
+            using (CashRegistryModel db = new CashRegistryModel())
+            {
+                List<Staff> staff = db.Staff
+                    .Where(s => s.Transaction.Count > 0) // Only get the staff that has any transactions
+                    .ToList();
+
+                foreach (Staff s in staff)
+                {
+                    Console.WriteLine("\n\n" + StaffHandler.PrintInfo(s));
+
+                    foreach (Transaction t in s.Transaction.OrderByDescending(t => GetTotalSum(t))) // Order by transaction sum
+                    {
+                        Console.WriteLine(GetShortSummary(t));
+                    }
+                }
+            }
+        }
+
+        private static List<Transaction> GetAllTransactionsWithTransactionComponents()
+        {
+            using (CashRegistryModel db = new CashRegistryModel())
+            {
+                return db.Transaction.Include("Staff").Include("TransactionComponent").ToList();
+            }
+        }
+
+        internal static void PrintSummary()
+        {
+            using (CashRegistryModel db = new CashRegistryModel())
+            {
+                Console.Clear();
+
+                // Get all of the transactions:
+                List<Transaction> allTransactions = db.Transaction.ToList();
+
+                // Print out the summary:
+                allTransactions.ForEach(transaction => Console.WriteLine(GetShortSummary(transaction)));
+
+                // Print data about the collection:
+                double totalSum = GetTotalSum(allTransactions); // Assign the total to a variable to not run the loop twice
+                Console.WriteLine(String.Format("\nTotal number of transactions: {0}\n" +
+                    "Total sum: {1}\n" +
+                    "Average sum: {2}", allTransactions.Count, totalSum, totalSum/allTransactions.Count ));
+
+            }
+        }
+
         #endregion
 
 
@@ -204,6 +277,24 @@ namespace CashRegistryAPR0400.Models.Handlers
             {
                 Console.WriteLine("\t\t" + TransactionComponentHandler.Summarize(tc));
             }
+            Console.WriteLine(String.Format("\tTotal: {0}",  GetTotalSum(transaction)));
+        }
+
+        private static double GetTotalSum(Transaction transaction)
+        {
+            return TransactionComponentHandler.GetSum(transaction.TransactionComponent);
+        }
+
+        private static double GetTotalSum(List<Transaction> transactions) // Overloaded method to be able to summarize lists of transactions
+        {
+            double totalSum = 0.00;
+            transactions.ForEach(transaction => totalSum += GetTotalSum(transaction));
+            return totalSum;
+        }
+
+        private static string GetShortSummary(Transaction transaction)
+        {
+            return String.Format("Date: {0}\tNo. products: {1}\tTotal price: {2}", transaction.TimeOfPurchase.ToShortDateString(), transaction.TransactionComponent.Count, GetTotalSum(transaction));
         }
 
 

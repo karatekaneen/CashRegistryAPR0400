@@ -30,5 +30,18 @@ namespace CashRegistryAPR0400.Models.Handlers
         {
             return String.Format("{0} - {1} * {2} - {3}", tc.ProductName, tc.ProductPrice, tc.Quantity, tc.ProductPrice*tc.Quantity);
         }
+
+        internal static double GetSum(ICollection<TransactionComponent> transactionComponents)
+        {
+            double output = 0.00;
+
+            foreach (TransactionComponent tc in transactionComponents)
+            {
+                output += tc.ProductPrice * tc.Quantity;
+            }
+
+            return output;
+            
+        }
     }
 }

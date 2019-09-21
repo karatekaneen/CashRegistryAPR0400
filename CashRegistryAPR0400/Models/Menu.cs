@@ -197,17 +197,18 @@ namespace CashRegistryAPR0400
                 string userInput = Console.ReadLine();
 
                 if (userInput == "0") shouldBeOpen = false;
-                /*else if (userInput == "1")
+                else if (userInput == "1")
                 {
-                    ProductHandler.ListAll();
+                    TransactionHandler.PrintSummary();
                     ReturnToMenu();
                 }
+                
                 else if (userInput == "2")
                 {
-                    ProductHandler.Create();
+                    TransactionHandler.OpenListMenu();
                     ReturnToMenu();
                 }
-                */
+                
                 else if (userInput == "3")
                 {
                     TransactionHandler.Sell();
