@@ -186,6 +186,10 @@ namespace CashRegistryAPR0400.Models.Handlers
 
         }
 
+        #endregion
+
+        #region Data
+
         internal static void OpenListMenu()
         {
             bool shouldBeOpen = true;
@@ -197,7 +201,7 @@ namespace CashRegistryAPR0400.Models.Handlers
                 "2 - Order by sum \n" +
                 "3 - All transactions >= $100\n" +
                 "4 - Health freaks (No dairy or colonial)\n" +
-                "5 - Slobs (No fruits)\n");
+                "5 - Possible lactose intolerants\n");
             while (shouldBeOpen)
             {
                 Console.Write("Enter your choice: ");
@@ -205,8 +209,45 @@ namespace CashRegistryAPR0400.Models.Handlers
 
                 if (userInput == "0") break;
                 else if (userInput == "1") PrintByStaffMember();
-                //else if (userInput == "2")
+                else if (userInput == "2") PrintByTotalSum();
+                else if (userInput == "3") PrintBigSpenders();
+                else if (userInput == "4") PrintHealthyPeople();
+                else if (userInput == "5") PrintPossibleLactoseIntolerant();
                 else Menu.PrintInvalidChoice();
+            }
+        }
+
+        private static void PrintBigSpenders()
+        {
+            using (CashRegistryModel db = new CashRegistryModel())
+            {
+                db.Transaction
+                    .ToList() // Need to convert to list to be able to use GetTotalSum
+                    .Where(t => GetTotalSum(t) >= 100)
+                    .ToList()
+                    .ForEach(t => Console.WriteLine(GetShortSummary(t)));
+            }
+        }
+
+        private static void PrintHealthyPeople()
+        {
+            using (CashRegistryModel db = new CashRegistryModel())
+            {
+                db.Transaction
+                    .Where(t => t.TransactionComponent.All(tc => tc.ProductCategory == "Fruit")) // Only get the people that ONLY buys fruits
+                    .ToList()
+                    .ForEach(t => Console.WriteLine(t.PaymentMethod + " - " + GetShortSummary(t)));
+            }
+        }
+
+        private static void PrintPossibleLactoseIntolerant()
+        {
+            using (CashRegistryModel db = new CashRegistryModel())
+            {
+                db.Transaction
+                    .Where(t => t.TransactionComponent.All(tc => tc.ProductCategory != "Dairy")) // Get the people that could be lactose intolerant
+                    .ToList()
+                    .ForEach(t => Console.WriteLine(GetShortSummary(t)));
             }
         }
 
@@ -230,6 +271,18 @@ namespace CashRegistryAPR0400.Models.Handlers
             }
         }
 
+        private static void PrintByTotalSum()
+        {
+            using (CashRegistryModel db = new CashRegistryModel())
+            {
+                db.Transaction
+                    .ToList()
+                    .OrderByDescending(t => GetTotalSum(t)) // Get highest sum first
+                    .ToList() // Needs to do this twice to get Linq to cooperate
+                    .ForEach(t => Console.WriteLine(GetShortSummary(t)));
+            }
+        }
+
         private static List<Transaction> GetAllTransactionsWithTransactionComponents()
         {
             using (CashRegistryModel db = new CashRegistryModel())
@@ -238,7 +291,16 @@ namespace CashRegistryAPR0400.Models.Handlers
             }
         }
 
-        internal static void PrintSummary()
+
+
+
+
+        #endregion
+
+
+        #region Helper methods
+
+        internal static void PrintSummary() // Method to get summary of all transacxtions
         {
             using (CashRegistryModel db = new CashRegistryModel())
             {
@@ -254,17 +316,12 @@ namespace CashRegistryAPR0400.Models.Handlers
                 double totalSum = GetTotalSum(allTransactions); // Assign the total to a variable to not run the loop twice
                 Console.WriteLine(String.Format("\nTotal number of transactions: {0}\n" +
                     "Total sum: {1}\n" +
-                    "Average sum: {2}", allTransactions.Count, totalSum, totalSum/allTransactions.Count ));
+                    "Average sum: {2}", allTransactions.Count, totalSum, totalSum / allTransactions.Count));
 
             }
         }
 
-        #endregion
-
-
-        #region Helper methods
-
-        private static void PrintSummary(Transaction transaction)
+        private static void PrintSummary(Transaction transaction) // Method to get summary of single transaction.
         {
             Console.WriteLine(String.Format("** Summary **\n" +
                 "\tStaff: {0} {1}\n" +
