@@ -14,22 +14,24 @@ I think that I'm justified to a C. See explanation below.
 
 ### D
 
-_"For this grade you need to create 3 tables. The tables should have a 1:M relationship. "_
+> _"For this grade you need to create 3 tables. The tables should have a 1:M relationship. "_
 
 I have the `Staff`, `Transaction` and `TransactionComponent` tables that are linked 1:N. All with CRUD except `Transaction`, see why above.
 
-_"Make a menu for selecting which operation to use._" - See the `Menu` class and some inside the Handlers.
+> _"Make a menu for selecting which operation to use._" 
+
+See the `Menu` class and some inside the Handlers.
 
 ### C
 
-_"To obtain a C you
-follow the instructions for grade D and add
-CRUD operations for two of the tables._"
+> _"To obtain a C you follow the instructions for grade D and add CRUD operations for two of the tables._"
+
 This can be seen in `Staff`, `Transaction` and `Product` although products aren't linked to any of the other tables with foregin keys.
 
 ### B
 
-_"For this grade you include an M:M relation in your data model. You hould ave CRUD operations for the tables in the M:M relation. "_
+> _"For this grade you include an M:M relation in your data model. You hould ave CRUD operations for the tables in the M:M relation. "_
+
 Did not implement this because it felt forced and not really logical. But if I would have implemented it I would have made a new table with id's from the tables i wanted to link as foreign keys. Then to implement it in the code it's just to create the new objects and save the changes to db.
 
 ### A
