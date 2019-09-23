@@ -38,7 +38,11 @@ The only extra stuff that I implemented is some Linq magic in the fetching of tr
 
 ## SQL
 
+I am using a file database because I already have a SQL instance running for a work project and I don't want to mess things up with conflicts that will be hard to revert.
+
 ### Data model
+
+![alt text](Datamodell.png "Basic ER model")
 
 ### Product table
 
