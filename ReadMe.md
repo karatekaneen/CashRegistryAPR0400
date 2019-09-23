@@ -8,6 +8,20 @@ There's 3 linked tables with full crud for two of them and only CRD for the `Tra
 
 There is some redundancy between the `Product` and `TransactionComponent` table. This is due to the fact that we don't want all the historical transactions to be modified whenever we update the price of a Product.
 
+## Screenshots
+
+![alt text](1.png "Screenshot of usage")
+
+![alt text](2.png "Screenshot of usage")
+
+![alt text](3.png "Screenshot of usage")
+
+![alt text](4.png "Screenshot of usage")
+
+![alt text](5.png "Screenshot of usage")
+
+
+
 ## Notes
 
 I think that I'm justified to a C. See explanation below.
